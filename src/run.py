@@ -1,11 +1,9 @@
-import sys, os
-sys.path.append(os.path.abspath("../Lib/site-packages"))
-sys.path.append(os.path.abspath("./Lib/site-packages"))
+import sys
+sys.path.append("../Lib/site-packages")
+sys.path.append("./Lib/site-packages")
 
-from flask import Flask, redirect, url_for, render_template
-from controller.accountctl import account
-from controller.archivectl import archive
-from controller.searchctl import search
+from flask import Flask, redirect, render_template
+from controller import account, archive, search
 
 app = Flask(
     __name__, 
@@ -14,6 +12,7 @@ app = Flask(
     template_folder="../theme"
 )
 
+# register router
 app.register_blueprint(account, url_prefix='/api/account')
 app.register_blueprint(archive, url_prefix='/api/archive')
 app.register_blueprint(search, url_prefix='/api/search')
@@ -26,7 +25,7 @@ def home():
 # error redirect to home
 @app.errorhandler(404)
 def notFind(error):
-    return redirect(url_for('home'))
+    return redirect("/")
 
 
 if __name__ == "__main__":
